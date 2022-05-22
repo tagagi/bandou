@@ -1,0 +1,90 @@
+#root{
+    position: absolute;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+.slide,.content{
+    position: relative;
+    height: 100%;
+}
+.slide{
+    width: 200px;
+    overflow: hidden;
+    background-color: #001529;
+    transition: width 1s;
+    white-space: nowrap;
+}
+.content{
+    flex-grow: 1;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    background-color: #f7f7f9;
+}
+.content-top{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    padding-left: 1em;
+    z-index: 1;
+    justify-content: space-between;
+    padding-right: 1em;
+}
+.wrapper{
+    position: absolute;
+    padding-top: 80px;
+    height: 100%;
+    width: 100%;
+    z-index: 0;
+}
+.slide-top,.content-top{
+    width: 100%;
+    height: 80px;
+}
+.slide-top{
+    background-color: #1890ff;
+    color: #ffffff;
+    font-size: 22px;
+    text-align: center;
+    line-height: 80px;
+    font-weight: bolder;
+}
+.slide-list{
+    position: relative;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    color: #ffffff;
+}
+.slide-list-item{
+    position: relative;
+    height: 38px;
+    padding-left: 1em;
+    line-height: 38px;
+}
+.slide-list-item>a{
+    color: #ffffff;
+    text-decoration: none;
+}
+.slide-list-item>a:hover{
+    color: #1890ff;
+}
+.slide-active{
+    background-color: #cecece77;
+}
+.toggle{
+    font-size: 1.5em;
+}
+.toggle:hover{
+    color: #1890ff;
+}
+.search-box{
+    padding: 1em;
+    margin-bottom: 1em;
+}
+.sp-page{
+    position: relative;
+    width: 100%;
+    text-align: right;
+}

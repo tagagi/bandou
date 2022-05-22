@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta
+                name="viewport"
+                content="width=device-width, initial-scale=1.0, user-scalable=0"
+        />
+        <title>瓣豆书评系统</title>
+        <link rel="stylesheet" href="../../bootstrap/css/bootstrap.css"/>
+        <link rel="stylesheet" href="../../css/main.css"/>
+        <link rel="stylesheet" href="../../css/detail.css">
+
+        <script src="../../js/jquery-3.5.1.js"></script>
+        <script src="../../js/toggle.js" defer></script>
+    </head>
+    <body>
+        <div id="root">
+            <div class="slide">
+                <div class="slide-top">
+                   瓣豆书评系统
+                </div>
+                <ul class="slide-list">
+                    <li class="slide-list-item">
+                        <a href="#" th:href="@{/admin/home}">首页</a>
+                    </li>
+                    <li class="slide-list-item slide-active">
+                        <a href="#" th:href="@{/admin/toBookManage}">书单管理</a>
+                    </li>
+                    <li class="slide-list-item">
+                        <a href="#" th:href="@{/admin/toUserManage}">用户管理</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="content">
+                <div class="content-top">
+                    <span
+                            class="glyphicon glyphicon-menu-hamburger toggle"
+                    ></span>
+                    <a class="btn btn-default" href="/admin/logout">退出登录</a>
+                </div>
+                <div class="wrapper">
+                    <div class="main">
+                        <!-- 书籍信息 -->
+                        <div class="book-detail">
+                            <h2 th:text="${book.bookname}">人月神话</h2>
+                            <table class="table table-bordered">
+                                <tbody>
+                                <tr>
+                                    <td class="book-key">编号：</td>
+                                    <td class="book-value" th:text="${book.id}">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="book-key">作者：</td>
+                                    <td class="book-value" th:text="${book.writer}">弗雷德里克·布鲁克斯</td>
+                                </tr>
+                                <tr>
+                                    <td class="book-key">ISBN：</td>
+                                    <td class="book-value" th:text="${book.ISBN}">9787302059325</td>
+                                </tr>
+                                <tr>
+                                    <td class="book-key">出版社：</td>
+                                    <td class="book-value" th:text="${book.publish}">清华大学出版社</td>
+                                </tr>
+                                <tr>
+                                    <td class="book-key">评分：</td>
+                                    <td class="book-value" th:text="${book.score}">8.4</td>
+                                </tr>
+                                <tr>
+                                    <td class="book-key">详情：</td>
+                                    <td class="book-value" th:text="${book.description}">8.4</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <!-- 评论列表 -->
+                        <div class="comment-list">
+                            <div class="comment" th:each="comment, itemStat:${comments}">
+                                <div class="row comment-head">
+                                    <div class="col-md-1" th:text="${comment.floor}+'楼'">#1</div>
+                                    <div class="col-md-5 comment-author" th:text="${comment.user.username}">
+                                        Admin
+                                    </div>
+                                    <div class="col-md-5 comment-time" th:text="${comment.createTime}">2020-08-18</div>
+                                    <div class="col-md-1">
+                                        <a th:href="@{/admin/delete/(id=${comment.id},bookId=${comment.book.id})}"
+                                           class="btn btn-danger btn-xs"
+                                        >删除
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="comment-content">
+                                     <blockquote th:if="${comment.parentComment != null}"
+                                                th:text="'@'+${comment.parentComment.floor}+'楼('+
+                                                ${comment.parentComment.user.username}+')       '
+                                                +${comment.parentComment.content}">父级
+                                    </blockquote>
+                                    <div th:text="${comment.content}">回复</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

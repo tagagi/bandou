@@ -1,0 +1,14 @@
+.main{
+    position: relative;
+    padding-left: 1em;
+    padding-right: 1em;
+}
+.add-book{
+    position: relative;
+    width: 100%;
+    padding: 1em 0;
+    margin-bottom: 1em;
+}
+.add-book>div{
+    text-align: center;
+}

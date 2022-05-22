@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=0"
+    />
+    <title>瓣豆书评系统</title>
+    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css"/>
+    <link rel="stylesheet" href="../css/main.css"/>
+    <link rel="stylesheet" href="../css/book.css"/>
+
+    <script src="../js/jquery-3.5.1.js"></script>
+    <script src="../js/toggle.js" defer></script>
+    <script src="../bootstrap/js/bootstrap.js" defer></script>
+    <script src="../js/book.js" defer></script>
+</head>
+<body>
+<div id="root">
+    <div class="slide">
+        <div class="slide-top">
+            瓣豆书评系统
+        </div>
+        <!-- FIXME 修改首页与用户管理的路径 -->
+        <ul class="slide-list">
+            <li class="slide-list-item">
+                <a href="#" th:href="@{/admin/home}">首页</a>
+            </li>
+            <li class="slide-list-item slide-active">
+                <a href="#" th:href="@{/admin/toBookManage}">书单管理</a>
+            </li>
+            <li class="slide-list-item">
+                <a href="#" th:href="@{/admin/toUserManage}">用户管理</a>
+            </li>
+        </ul>
+    </div>
+    <div class="content">
+        <div class="content-top">
+                    <span
+                            class="glyphicon glyphicon-menu-hamburger toggle"
+                    ></span>
+            <a class="btn btn-default" href="/admin/logout">退出登录</a>
+        </div>
+        <div class="wrapper">
+            <div class="main">
+                <!-- 搜索 -->
+                <form
+                        action="/admin/toBookManage?type=1"
+                        method="POST"
+                        class="form-inline search-box"
+                >
+                    <div class="form-group">
+                        <select
+                                class="form-control"
+                                name="queryOption"
+                        >
+                            <option th:selected="${queryOption} eq '书名' ">书名</option>
+                            <option th:selected="${queryOption} eq '作者' ">作者</option>
+                            <option th:selected="${queryOption} eq 'ISBN' ">ISBN</option>
+                        </select>
+                        <input
+                                type="text"
+                                name="queryInfo"
+                                class="form-control "
+                                th:value="${queryInfo}"
+                        />
+                        <button
+                                type="submit"
+                                class="btn btn-primary btn-sm"
+                        >
+                            搜索
+                        </button>
+                    </div>
+
+                    <!-- 添加书单 -->
+                    <div style="float:right">
+                        <button
+                                type="button"
+                                class="btn btn-info btn-sm btn-add"
+                                data-toggle="modal"
+                                data-target="#addBook"
+                        >
+                            添加书籍
+                        </button>
+                    </div>
+                </form>
+
+
+
+                <!-- 书单列表 -->
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>书名</th>
+                        <th>作者</th>
+                        <th>出版社</th>
+                        <th>ISBN</th>
+                        <th>评分</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="book-item" th:each="book : ${page.content}">
+                        <td th:text="${book.id}" >id1</td>
+<!--                        style="display: none"-->
+                        <!-- FIXME 添加详情页路径 -->
+                        <td ><a href="./detail.html" th:href="@{/admin/detail/{id}(id=*{book.id})}" th:text="${book.bookname}">人月神话</a></td>
+                        <td th:text="${book.writer}">布鲁克斯</td>
+                        <td th:text="${book.publish}">清华大学出版社</td>
+                        <td th:text="${book.ISBN}">1asfdasdfasvasdvasd</td>
+                        <td th:text="${book.score}">7.8</td>
+                        <td>
+                            <button
+                                    type="button"
+                                    class="btn btn-info btn-sm btn-edit"
+                                    data-toggle="modal"
+                                    data-target="#editBook"
+                            >
+                                修改
+                            </button>
+                            <button
+                                    class="btn btn-danger btn-sm btn-del"
+                                    data-toggle="modal"
+                                    data-target="#delBook"
+                                    id="delBookBtn"
+                            >删除
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <!-- 分页 -->
+                <div class="sp-page">
+                    <div class="btn-group" role="group" th:if="${page.totalPages}>1">
+                        <a
+                                class="btn btn-default"
+                                href="#"
+                                th:href="@{/admin/toBookManage(page=0)}" th:unless="${page.first}"
+                                role="button"
+                        >首页</a
+                        >
+                        <a
+                                class="btn btn-default"
+                                href="#"
+                                th:href="@{/admin/toBookManage(page=${page.number}-1)}" th:unless="${page.first}"
+                                role="button"
+                        >上一页</a
+                        >
+                        <a
+                                class="btn btn-default"
+                                href="#"
+                                th:href="@{/admin/toBookManage(page=${page.number}+1)}" th:unless="${page.last}"
+                                role="button"
+                        >下一页</a
+                        >
+                        <a
+                                class="btn btn-default"
+                                href="#"
+                                th:href="@{/admin/toBookManage(page=${page.totalPages}-1)}" th:unless="${page.last}"
+                                role="button"
+                        >尾页</a
+                        >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 修改书籍弹窗 -->
+    <div class="modal fade" id="editBook" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        修改书籍
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form
+                            class="form-horizontal"
+                            method="POST"
+                            id="bookUpdate-form"
+                            action="/admin/bookUpdate"
+                    >
+                        <div class="form-group">
+                            <label
+                                    for="bookname"
+                                    class="col-sm-2 control-label"
+                            >书名：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="bookname"
+                                        name="bookname"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="writer"
+                                    class="col-sm-2 control-label"
+                            >作者：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="writer"
+                                        name="writer"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="publish"
+                                    class="col-sm-2 control-label"
+                            >出版社：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="publish"
+                                        name="publish"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="ISBN"
+                                    class="col-sm-2 control-label"
+                            >ISBN：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="ISBN"
+                                        name="ISBN"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button
+                                        class="btn btn-success"
+                                        type="submit"
+                                >
+                                    保存
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                    >
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加书籍弹窗 -->
+    <div class="modal fade" id="addBook" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                    >
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel_add">
+                        添加书籍
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <form
+                            class="form-horizontal"
+                            method="POST"
+                            action="/admin/bookAdd"
+                    >
+                        <div class="form-group">
+                            <label
+                                    for="bookname_add"
+                                    class="col-sm-2 control-label"
+                            >书名：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="bookname_add"
+                                        name="bookname"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="writer_add"
+                                    class="col-sm-2 control-label"
+                            >作者：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="writer_add"
+                                        name="writer"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="publish_add"
+                                    class="col-sm-2 control-label"
+                            >出版社：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="publish_add"
+                                        name="publish"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="ISBN_add"
+                                    class="col-sm-2 control-label"
+                            >ISBN：</label
+                            >
+                            <div class="col-sm-10">
+                                <input
+                                        type="text"
+                                        class="form-control"
+                                        id="ISBN_add"
+                                        name="ISBN"
+                                />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label
+                                    for="introduction_add"
+                                    class="col-sm-2 control-label"
+                            >简介：</label
+                            >
+                            <div class="col-sm-10">
+                                <textarea class="form-control"
+                                          rows="5"
+                                          id="introduction_add"
+                                          name="description"
+                                >
+
+                                </textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button
+                                        class="btn btn-success"
+                                        type="submit"
+                                >
+                                    保存
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button
+                            type="button"
+                            class="btn btn-default"
+                            data-dismiss="modal"
+                    >
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 删除书籍弹窗 -->
+    <div class="modal fade" id="delBook" tabindex="-1" role="dialog" aria-labelledby="delBookModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="exampleModalLabel">确认框</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label class="control-label">确定要删除书籍？</label>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    <a role="button" id="delBook-btn" type="submit" class="btn btn-primary">确认</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

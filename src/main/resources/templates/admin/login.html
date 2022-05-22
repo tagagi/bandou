@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>管理员登录</title>
+    <link href="../css/login.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all"/>
+    <link href="../css/demo.css" rel="stylesheet" rev="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="../js/jquery1.42.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.SuperSlide.js"></script>
+    <script type="text/javascript" src="../js/Validform_v5.3.2_min.js"></script>
+
+    <script>
+        $(function () {
+
+            $(".i-text").focus(function () {
+                $(this).addClass('h-light');
+            });
+
+            $(".i-text").focusout(function () {
+                $(this).removeClass('h-light');
+            });
+
+            $("#username").focus(function () {
+                var username = $(this).val();
+                if (username == '输入账号') {
+                    $(this).val('');
+                }
+            });
+
+            $("#username").focusout(function () {
+                var username = $(this).val();
+                if (username == '') {
+                    $(this).val('输入账号');
+                }
+            });
+
+
+            $("#password").focus(function () {
+                var username = $(this).val();
+                if (username == '输入密码') {
+                    $(this).val('');
+                }
+            });
+
+
+            $("#yzm").focus(function () {
+                var username = $(this).val();
+                if (username == '输入验证码') {
+                    $(this).val('');
+                }
+            });
+
+            $("#yzm").focusout(function () {
+                var username = $(this).val();
+                if (username == '') {
+                    $(this).val('输入验证码');
+                }
+            });
+
+
+            $(".registerform").Validform({
+                tiptype: function (msg, o, cssctl) {
+                    var objtip = $(".error-box");
+                    cssctl(objtip, o.type);
+                    objtip.text(msg);
+                },
+                ajaxPost: true
+            });
+
+        });
+
+
+    </script>
+
+</head>
+<body>
+
+
+<div class="header">
+    <h1 class="headerLogo"><a title="书单管理系统" target="_blank" href="#">
+    </a></h1>
+</div>
+
+<div class="banner">
+
+    <div class="login-aside">
+        <div id="o-box-up"></div>
+        <div id="o-box-down" style="table-layout:fixed;">
+            <div class="error-box"></div>
+
+            <form method="post" action="/admin/login">
+                <div class="fm-item">
+                    <label for="logonId" class="form-label">管理员系统登陆：</label>
+                    <input type="text" value="输入账号" maxlength="100" id="username" class="i-text"
+                           ajaxurl="demo/valid.jsp" datatype="s6-18" name="adminname">
+                    <div class="ui-form-explain"></div>
+                </div>
+
+                <div class="fm-item">
+                    <label for="logonId" class="form-label">登陆密码：</label>
+                    <input type="password" value="" maxlength="100" id="password" class="i-text" datatype="*6-16"
+                           nullmsg="请设置密码！" name="password">
+                    <div class="ui-form-explain"></div>
+                </div>
+
+                <div class="fm-item">
+                    <label for="logonId" class="form-label"></label>
+                    <input type="submit" value="管理员登录" tabindex="4" id="send-btn" class="btn-adminLogin">
+                    <div class="ui-form-explain"></div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <div class="bd">
+        <ul>
+            <li style="background:url(../themes/theme-pic1.jpg) #CCE1F3 center 0 no-repeat;"><a target="_blank"
+                                                                                             href="#"></a></li>
+            <li style="background:url(../themes/theme-pic2.jpg) #BCE0FF center 0 no-repeat;"><a target="_blank"
+                                                                                             href="#"></a></li>
+        </ul>
+    </div>
+
+    <div class="hd">
+        <ul></ul>
+    </div>
+</div>
+<script type="text/javascript">jQuery(".banner").slide({
+    titCell: ".hd ul",
+    mainCell: ".bd ul",
+    effect: "fold",
+    autoPlay: true,
+    autoPage: true,
+    trigger: "click"
+});</script>
+
+<div class="banner-shadow"></div>
+
+<div class="footer">
+    <p>Copyright &copy; 2022.瓣豆书评系统 保留所有权利.</p>
+</div>
+
+</body>
+</html>

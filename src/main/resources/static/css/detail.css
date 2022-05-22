@@ -1,0 +1,55 @@
+.main{
+    position: relative;
+    width: 100%;
+    padding: 1em;
+    height: 100%;
+    overflow-y: scroll;
+}
+.book-detail{
+    position: relative;
+    width: 100%;
+}
+.book-key{
+    font-weight: bolder;
+    width: 6em;
+    text-align: right;
+}
+.edit-comment textarea{
+    resize: none;
+}
+.edit-comment{
+    text-align: right;
+    margin-bottom: 1em;
+}
+.edit-comment button{
+    margin-top: 1em;
+}
+.comment-list{
+    position: relative;
+    width: 100%;
+}
+.comment{
+    position: relative;
+    width: 100%;
+    background-color: #ffffff;
+    border-color: #ddd;
+    border-width: 1px;
+    border-radius: 5px;
+    padding: 1em;
+    margin: 1em 0;
+}
+.comment-time{
+    text-align: right;
+}
+.comment-head{
+    font-size: 0.8em;
+}
+.comment-content{
+    font-size: 1.2em;
+    border-top: solid 1px #ddd;
+    margin-top: 0.5em;
+}
+
+.comment-content blockquote{
+    font-size: 0.8em !important;
+}
